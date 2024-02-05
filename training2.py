@@ -1,3 +1,4 @@
+import tf2onnx
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Embedding, LSTM, Dense, concatenate, Dropout
 from tensorflow.keras.preprocessing.text import Tokenizer
@@ -48,8 +49,10 @@ model.compile(optimizer=Adam(), loss='binary_crossentropy', metrics=['accuracy']
 model.summary()
 
 # Train the model
-model.fit([X1_train, X2_train], y_train, batch_size=32, epochs=10, validation_split=0.1)
+model.fit([X1_train, X2_train], y_train, batch_size=32, epochs=30, validation_split=0.1)
 
 # Evaluate the model
 loss, accuracy = model.evaluate([X1_test, X2_test], y_test)
 print(f'Test Loss: {loss}, Test Accuracy: {accuracy}')
+
+tf2onnx.convert.from_keras(model, output_path="testing.onnx")
